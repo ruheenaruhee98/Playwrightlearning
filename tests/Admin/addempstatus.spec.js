@@ -1,0 +1,35 @@
+import { test, expect } from '@playwright/test';
+
+test('verify an admin can add emp stats', async ({ page }) => {
+  await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+  await page.getByRole('textbox', { name: 'Username' }).click();
+  await page.getByRole('textbox', { name: 'Username' }).press('CapsLock');
+  await page.getByRole('textbox', { name: 'Username' }).fill('A');
+  await page.getByRole('textbox', { name: 'Username' }).press('CapsLock');
+  await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+  await page.getByRole('button', { name: 'Login' }).click();
+  await expect(page.getByText('Time at WorkPunched')).toBeVisible();
+  await page.getByRole('link', { name: 'Admin' }).click();
+  await page.getByText('Job', { exact: true }).click();
+  await page.getByRole('listitem').filter({ hasText: /^Employment Status$/ }).click();
+  await page.getByRole('button', { name: ' Add' }).click();
+  await page.locator('form').getByRole('textbox').click();
+  await page.locator('form').getByRole('textbox').fill('full time');
+  await page.getByText('* Required Cancel Save').click();
+  await page.getByText('Add Employment StatusName *').click();
+  await page.getByText('* Required').click();
+  await page.getByText('Add Employment StatusName *').click();
+  await page.getByText('Add Employment StatusName *').click();
+  await page.getByText('Add Employment StatusName *').click();
+  await page.getByText('* Required').click();
+  await page.getByText('Add Employment StatusName *').click();
+  await page.getByText('Add Employment StatusName *').click();
+  await page.locator('form').getByRole('textbox').click();
+  await page.locator('form').getByRole('textbox').fill('full time new name');
+  await page.getByText('* Required Cancel Save').click();
+  await page.locator('div').filter({ hasText: 'Add Employment StatusName *' }).nth(3).click();
+  await page.getByRole('button', { name: 'Save' }).click();
+  await expect(page.getByRole('heading', { name: 'Employment Status' })).toBeVisible();
+});
